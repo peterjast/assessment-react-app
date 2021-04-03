@@ -38,7 +38,7 @@ class AddNewItem extends React.Component {
           <Form.Label>Description</Form.Label>
           <Form.Control type="text" placeholder="Description" data-testid="add-form-description" name="description" onChange={this.handleChange} />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button className="w-100" variant="info" type="submit">
           Add Item
         </Button>
       </Form>

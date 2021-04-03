@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class UpdateItemForm extends React.Component {
 
@@ -19,16 +21,18 @@ class UpdateItemForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.handleUpdate(this.state.item)
+    this.props.handleUpdate(this.state.item);
   }
 
   render() {
 
     return (
-      <form data-testid={`update-form-${this.props.item.name}`} onSubmit={this.handleChange}>
-        <input data-testid={`update-field-${this.props.item.name}`} name="notes" placeholder="Add Notes" onChange={this.handleChange} />
-        <button type="submit">Update Item</button>
-      </form>
+      <Form data-testid={`update-form-${this.props.item.name}`} onSubmit={this.handleSubmit}>
+        <Form.Group>
+          <Form.Control data-testid={`update-field-${this.props.item.name}`} type="text" name="notes" placeholder="add a note" onChange={this.handleChange} />
+        </Form.Group>
+        <Button className="float-left mt-3" variant="info" type="submit">Update</Button>
+      </Form>
     );
   }
 }
