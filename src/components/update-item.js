@@ -1,6 +1,8 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
-class UpdateItemForm extends React.Component {
+class UpdateForm extends React.Component {
 
   constructor(props) {
     super(props);
@@ -10,27 +12,29 @@ class UpdateItemForm extends React.Component {
   }
 
   handleChange = (e) => {
+    e.preventDefault();
     const field = e.target.name;
     const value = e.target.value;
     const item = this.state.item;
     item[field] = value;
     this.setState({item});
+    console.log(item);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.handleUpdate(this.state.item)
+    this.props.handleUpdate(this.state.item);
   }
 
   render() {
 
     return (
-      <form data-testid={`update-form-${this.props.item.name}`} onSubmit={this.handleChange}>
-        <input data-testid={`update-field-${this.props.item.name}`} name="notes" placeholder="Add Notes" onChange={this.handleChange} />
-        <button type="submit">Update Item</button>
-      </form>
+      <Form data-testid={`update-form-${this.props.item.name}`} onSubmit={this.handleSubmit}>
+        <Form.Control className="mb-3" data-testid={`update-field-${this.props.item.name}`} name="notes" placeholder="Add Notes" onChange={this.handleChange} />
+        <Button className="float-left" variant="info" type="submit">Update</Button>
+      </Form>
     );
   }
 }
 
-export default UpdateItemForm;
+export default UpdateForm;
