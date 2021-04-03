@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Header from './components/header.js';
 import Footer from './components/footer.js';
-import Col from 'react-bootstrap/Col';
 
 const API_SERVER = process.env.REACT_APP_API;
 
@@ -15,14 +14,41 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      selectedItem : {}
     }
   }
-
+  
+  addItem = async (item) => {
+    try{
+      await axios.post(`${API_SERVER}/items`, { name: item.name, description: item.description });
+      this.getItems();
+    } catch(err){
+      console.log(err.message);
+    }
+  }
+  
+  deleteItem = async (id) => {
+    await axios.delete(`${API_SERVER}/items/${id}`);
+    this.getItems();
+  }
+  
+  updateItem = async (item) => {
+    try{
+      // const updatedItems = items.map(currentItem => item._id === currentItem._id ? item : currentItem );
+      // this.setState({ items: updatedItems }) 
+      await axios.put(`${API_SERVER}/items/${item._id}`, item);
+      console.log('in update', this.state.items);
+      await this.getItems();
+    } catch(err){
+      console.log(err.message);
+    }
+  }
+  
   async componentDidMount() {
     await this.getItems();
   }
-
+  
   getItems = async () => {
     try{
       const response = await axios.get(`${API_SERVER}/items`);
@@ -34,29 +60,16 @@ class App extends React.Component {
     }
   }
 
-  addItem = async (item) => {
-    try{
-      await axios.post(`${API_SERVER}/items`, { name: item.name, description: item.description });
-      this.getItems();
-    } catch(err){
-      console.log(err.message);
-    }
-  }
+  selectItem = (item) => {
 
-  deleteItem = async (id) => {
-    await axios.delete(`${API_SERVER}/items/${id}`);
-    this.getItems();
   }
+  // updateItemsArr = async(itemsArr) => {
+  //   await this.setState({ items: itemsArr });
+  // }
 
-  updateItem = async (item) => {
-    await axios.put(`${API_SERVER}/items/${item._id}`, item);
-    this.getItems();
-    console.log('in update', this.state.items);
-  }
-
-  render() {
-    return (
-      <>
+render() {
+  return (
+    <>
       <Header />
       <Container fluid>
         <div className="mx-auto w-75 my-5">
@@ -67,7 +80,8 @@ class App extends React.Component {
           <Items className="my-5"         
           handleUpdate={this.updateItem} 
           handleDelete={this.deleteItem} 
-          itemsList={this.state.items} 
+          itemsList={this.state.items}
+          selectedItem={this.state.selectedItem}
           />
           }
         </div>
